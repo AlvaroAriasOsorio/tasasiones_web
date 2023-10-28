@@ -46,6 +46,16 @@ Future<void> getRecursosProvider() async {
     print('Error al realizar la solicitud HTTP: $e');
   }
 }
+void filtrarTasacionesProximasAVencer() {
+    DateTime now = DateTime.now();
+
+    tasasiones = tasasiones.where((tasasione) {
+      DateTime fechaVisita = DateTime.parse(tasasione.programarFechaVisita);
+      return fechaVisita.isAfter(now) || (fechaVisita.month == now.month && fechaVisita.year == now.year);
+    }).toList();
+
+    notifyListeners();
+  }
 
 
   //guardar cambios
@@ -87,6 +97,11 @@ Future<void> getRecursosProvider() async {
             "linkInformepdf": e.linkInformepdf,
             "estatus": e.estatus,
             "programarFechaVisita": e.programarFechaVisita,
+             "mes": e.mes,
+              "bt": e.bt,
+              "tipoBanca": e.tipoBanca,
+              "n°Documento": e.nDocumento,
+              "funcionarioBanco": e.funcionarioBanco,
             // "id": e.id,
           }
         }));
@@ -131,6 +146,11 @@ Future<void> getRecursosProvider() async {
             "linkInformepdf": e.linkInformepdf,
             "estatus": e.estatus,
             "programarFechaVisita": e.programarFechaVisita,
+             "mes": e.mes,
+              "bt": e.bt,
+              "tipoBanca": e.tipoBanca,
+              "n°Documento": e.nDocumento,
+              "funcionarioBanco": e.funcionarioBanco,
             // "id": e.id,
         }
       }),

@@ -5,14 +5,14 @@ import 'package:crud_sheety/UI/widget/widget.dart';
 import 'package:crud_sheety/models/tasasiones_model.dart';
 import 'package:crud_sheety/service/service.dart';
 import 'package:crud_sheety/service/tasasiones_provider.dart';
-import 'package:crud_sheety/utils/scroll_web.dart';
-import 'package:crud_sheety/utils/text_custom.dart';
+import 'package:crud_sheety/UI/widget/scroll_web.dart';
+import 'package:crud_sheety/UI/widget/text_custom.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UsuarioModule extends StatelessWidget {
-  const UsuarioModule({super.key});
+class TasasionesModule extends StatelessWidget {
+  const TasasionesModule({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class TasasionesFOrm extends StatefulWidget {
 class _TasasionesFOrmState extends State<TasasionesFOrm> {
   bool isChecked = false;
   bool isVisible = true;
- TextEditingController _dateController = TextEditingController();
+ final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +217,8 @@ class _TasasionesFOrmState extends State<TasasionesFOrm> {
                     keyboardType: TextInputType.number,
                     decoration: decorationinputtext(
                         'Valor Comercial', 'Valor comercial')),
-                spacingheight10,
+                 spacingheight10,
+                
                 TextFormField(
                     initialValue: tasac.id == null
                         ? tasac.valorRealizacion .toString().substring(
@@ -296,17 +297,108 @@ class _TasasionesFOrmState extends State<TasasionesFOrm> {
                   value: tasac.estatus,
                   title: tasac.estatus == true
                       ? const Text(
-                          'Disponible',
+                          'Culminado',
                           style: TextStyle(color: Colors.black),
                         )
                       : const Text(
-                          'No Disponible',
+                          'Pendiente',
                           style: TextStyle(color: Colors.red),
                         ),
                   activeColor: Colors.black,
                   onChanged: uForm.updateAvailability,
                 ),
-                spacingheight30
+                spacingheight30,
+                 Text(
+                  'Solicitudes del Banco con Datos de Clientes e Inmuebles'.toUpperCase(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold, // Estilo del texto en negrita
+                      color: Colors.grey, // Color del texto del título
+                    ),
+                  ),
+                  spacingheight30,
+                 TextFormField(
+                    initialValue: tasac.id == null
+                        ? tasac.bt.toString().substring(
+                              1,
+                            )
+                        : tasac.bt.toString(),
+                    onChanged: (value) {
+                      tasac.bt = int.parse(value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'campo obligatorio';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    decoration: decorationinputtext(
+                        'BT', 'Codìgo BT')),
+                spacingheight10,
+                TextFormField(
+                  initialValue: tasac.tipoBanca,
+                  onChanged: (value) {
+                    tasac.tipoBanca = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Campo obligatorio';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.text,
+                  decoration:
+                      decorationinputtext('Tipo Banca', 'Ingrese Tipo banca'),
+                ),
+                spacingheight10,
+                 TextFormField(
+                  initialValue: tasac.nDocumento,
+                  onChanged: (value) {
+                    tasac.nDocumento = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Campo obligatorio';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.text,
+                  decoration:
+                      decorationinputtext('Nª Docuemnto', 'Ingrese nro. documento'),
+                ),
+                spacingheight10,
+                 TextFormField(
+                  initialValue: tasac.mes,
+                  onChanged: (value) {
+                    tasac.mes = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Campo obligatorio';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.text,
+                  decoration:
+                      decorationinputtext('Mes de Solicitud', 'Ingrese mes de solicitud'),
+                ),
+                spacingheight10,
+                 TextFormField(
+                  initialValue: tasac.funcionarioBanco,
+                  onChanged: (value) {
+                    tasac.funcionarioBanco = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Campo obligatorio';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.text,
+                  decoration:
+                      decorationinputtext('Funcionario de Banca', 'Ingrese Funcionario de banca'),
+                ),
+                spacingheight100,
               ],
             )),
       ),

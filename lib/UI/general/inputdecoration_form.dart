@@ -11,8 +11,8 @@ InputDecoration decorationinputtext(String hintText, String? labeltext) {
     focusedErrorBorder: outlineInputBorder(),
     hintText: hintText,
     labelText: labeltext,
-    // fillColor: Colors.red,
-    // filled: true,
+    fillColor: Colors.white,
+    filled: true,
     labelStyle:  TextStyle(
       fontSize: 12,
       color: kfontPrimaryColor.withOpacity(.6)

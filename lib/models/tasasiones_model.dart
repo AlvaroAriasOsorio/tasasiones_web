@@ -34,6 +34,11 @@ class Tasasione {
     String linkInformepdf;
     bool estatus;
     String programarFechaVisita;
+    String mes;
+    int bt;
+    String tipoBanca;
+    String nDocumento;
+    String funcionarioBanco;
 
     Tasasione({
         this.id,
@@ -49,6 +54,11 @@ class Tasasione {
         required this.linkInformepdf,
         required dynamic estatus,
         required this.programarFechaVisita,
+        required this.mes,
+        required this.bt,
+        required this.tipoBanca,
+        required this.nDocumento,
+        required this.funcionarioBanco,
   }) : estatus = estatus is bool ? estatus : estatus.toLowerCase() == 'true';
 
 
@@ -72,6 +82,11 @@ class Tasasione {
         ? json["estatus"]
         : json["estatus"].toString().toLowerCase() == 'true',
         programarFechaVisita:json["programarFechaVisita"], // Convierte la cadena a DateTime
+        mes: json["mes"],
+        bt: json["bt"],
+        tipoBanca: json["tipoBanca"],
+        nDocumento: json["n°Documento"],
+        funcionarioBanco: json["funcionarioBanco"],
     );
 
     Map<String, dynamic> toMap() => {
@@ -88,6 +103,11 @@ class Tasasione {
         "linkInformepdf": linkInformepdf,
         "estatus": estatus,
         "programarFechaVisita": programarFechaVisita,
+        "mes": mes,
+        "bt": bt,
+        "tipoBanca": tipoBanca,
+        "n°Documento": nDocumento,
+        "funcionarioBanco": funcionarioBanco,
     };
     Tasasione copy()=> Tasasione(
       id: id, 
@@ -102,6 +122,11 @@ class Tasasione {
       ubicacionMaps: ubicacionMaps, 
       linkInformepdf: linkInformepdf, 
       estatus: estatus, 
-      programarFechaVisita: programarFechaVisita
+      programarFechaVisita: programarFechaVisita,
+      mes: mes,
+      bt: bt,
+      tipoBanca: tipoBanca,
+      nDocumento: nDocumento,
+      funcionarioBanco: funcionarioBanco,
       );
 }

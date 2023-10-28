@@ -1,7 +1,7 @@
 
 import 'package:crud_sheety/models/user_model.dart';
 import 'package:crud_sheety/service/service.dart';
-import 'package:crud_sheety/utils/text_custom.dart';
+import 'package:crud_sheety/UI/widget/text_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

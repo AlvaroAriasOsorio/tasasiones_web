@@ -2,21 +2,17 @@
 
 import 'package:crud_sheety/UI/general/general.dart';
 import 'package:crud_sheety/UI/pages/login_page.dart';
-
-import 'package:crud_sheety/UI/pagesModules/usuario_gestion_pages_form.dart';
+import 'package:crud_sheety/UI/pagesModules/pagina_datatable.dart';
 import 'package:crud_sheety/UI/widget/widget.dart';
+import 'package:crud_sheety/Xprueba%20borrar/usuario_gestion_page.dart';
+import 'package:crud_sheety/Xprueba%20borrar/usuario_gestion_pages_form.dart';
 import 'package:crud_sheety/models/model.dart';
 import 'package:crud_sheety/service/service.dart';
-import 'package:bubble_lens/bubble_lens.dart';
-import 'package:crud_sheety/utils/text_custom.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:crud_sheety/UI/widget/text_custom.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:insta_image_viewer/insta_image_viewer.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'package:vector_math/vector_math_64.dart' as vector;
@@ -32,8 +28,7 @@ class NavPerfilPage extends StatefulWidget {
 
 class _NavPerfilPageState extends State<NavPerfilPage> {
  
-  bool isVisbleLegend = false;
-  int tab = 0;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -46,141 +41,68 @@ class _NavPerfilPageState extends State<NavPerfilPage> {
             pinned: true,
           ),
           SliverToBoxAdapter(
-            child: BlurWidget(
-              colorblur: const Color.fromARGB(255, 222, 221, 221),
-              height: null,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    spacingheight20,
-                    ButtonBar(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  spacingheight100,
+                  Container(
+                    color:  const Color.fromARGB(255, 71, 13, 13),
+                    child: ButtonBar(
                       alignment: MainAxisAlignment.spaceAround,
                       children: [
                         TextButton(
                           onPressed: () {
-                            isVisbleLegend = !isVisbleLegend;
-                            setState(() {
-                              tab = 1;
-                            });
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const UsuariogestionPage(),));
                           },
                           child: const Column(
                             children: [
-                              Icon(Icons.edit_calendar_rounded),
-                              Text('Cronograma'),
+                              Icon(Icons.people,color: Colors.white,),
+                              H1(text:'Gestiòn Usuarios',textColor: Colors.white,fontSize: 13,)
                             ],
                           ),
                         ),
                         TextButton(
                           onPressed: () {
-                            tab = 2;
-                            setState(() {});
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataTable(listusers: widget.listusers, index: widget.index,),));
                           },
                           child: const Column(
                             children: [
-                              Icon(Icons.safety_divider_outlined),
-                              Text('Pagos'),
+                              Icon(Icons.safety_divider_outlined,color: Colors.white,),
+                             H1(text:'Tasasiones',textColor: Colors.white,fontSize: 13,)
                             ],
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            tab = 3;
-                            setState(() {});
-                          },
+                          onPressed: (){
+                          Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false);
+                        },
                           child: const Column(
                             children: [
-                              Icon(Icons.verified),
-                              Text('Asistencias'),
+                              Icon(Icons.offline_bolt_rounded,color: Colors.white,),
+                              H1(text:'Cerrar sesiòn',textColor: Colors.white,fontSize: 13,)
                             ],
                           ),
                         ),
                       ],
                     ),
-                    //statictics
-                     HorasExtraxStatictis(
-                            isVisbleLegend: isVisbleLegend, widget: widget, tab: tab,),
-  
-                    _expandTitleCard(
-                      'Actividad',
-                      SvgPicture.asset(AssetsDataSVG.home),
-                      [],
-                    ),
-                    _expandTitleCard(
-                        'Team',
-                        SvgPicture.asset(
-                          AssetsDataSVG.categoria,
-                          // ignore: deprecated_member_use
-                          color: kfontNavPinkcolor,
-                        ),
-                        [
-                          Container(
-                            margin: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                                color: kfont3erColor,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: BubbleLens(
-                                size: 60,
-                                paddingX: 5,
-                                paddingY: 5,
-                                width: size.width,
-                                height: 300,
-                                widgets: [
-                                  ...widget.listusers.recursoList
-                                      .map((e) => CircleAvatar(
-                                            backgroundImage:
-                                                NetworkImage(e.image),
-                                            child: InstaImageViewer(
-                                                child: Image.network(
-                                              e.image,
-                                            )),
-                                          ))
-                                ]),
-                          ),
-                        ]),
-                    _expandTitleCard('Herramientas',
-                        SvgPicture.asset(AssetsDataSVG.configuracion), [
-                      TextButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             const UsuariogestionPage()));
-                        },
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(AssetsDataSVG.user),
-                            const Text('Gestionar Usuarios'),
-                          ],
-                        ),
+                  ),
+                  spacingheight100,
+                  Container(
+                    padding: const EdgeInsets.all(30),
+                    height: 800,
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Bienvenido a nuestro innovador Software de Tasaciones: Diseñado con precisión y potenciado por tecnología de vanguardia, nuestro software para el área de tasaciones es la herramienta esencial para profesionales y expertos en bienes raíces. Simplificando el proceso de tasación, nuestro software integra datos precisos y análisis profundos para ofrecerte evaluaciones detalladas y confiables. Desde la evaluación de propiedades residenciales hasta complejas valoraciones comerciales, nuestra plataforma intuitiva te guiará a través de cada paso, permitiéndote realizar tasaciones precisas en tiempo récord. ¡Descubre la eficiencia y precisión que tu trabajo merece con nuestro software líder en la industria!",
+                        style: TextStyle(fontSize: 15),
+                        textAlign: TextAlign.justify,
                       ),
-                    ]),
-                    _expandTitleCard('Cerrar la sesión',
-                        SvgPicture.asset(AssetsDataSVG.pdf), [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginPage(),
-                              ),
-                              (route) => false);
-                        },
-                        child: Column(
-                          children: [
-                            LottieBuilder.asset(
-                              AssetsDataLoties.intro1,
-                              width: 100,
-                            ),
-                            SvgPicture.asset(AssetsDataSVG.almacen),
-                            const Text('Cerrar la sesión'),
-                          ],
-                        ),
-                      )
-                    ])
-                  ],
-                ),
+                    ],
+                  )
+                  ,)
+                ],
               ),
             ),
           ),
@@ -188,131 +110,9 @@ class _NavPerfilPageState extends State<NavPerfilPage> {
       ),
     );
   }
-
-  Widget _expandTitleCard(String title, Widget leading, List<Widget> children) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.0),
-      child: ExpansionTileCard(
-          leading: ClipRRect(
-              borderRadius: BorderRadius.circular(10), child: leading),
-          title: H1(
-              fontSize: 15,
-              text: title,
-              textColor: kfont3erColor),
-          children: children),
-    );
-  }
 }
 
-class HorasExtraxStatictis extends StatelessWidget {
-   HorasExtraxStatictis({
-    super.key,
-    required this.isVisbleLegend,
-    required this.widget,
-    required this.tab
-  });
 
-  final bool isVisbleLegend;
-  final NavPerfilPage widget;
-  int tab=0;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-       tab==1 ? SfCartesianChart(
-            title: ChartTitle(
-                text: 'Horas extras',
-                textStyle: TextStyle(
-                  color: kfontNavBackgroundColor,
-                )),
-            legend: Legend(isVisible: isVisbleLegend),
-            tooltipBehavior: TooltipBehavior(
-              color: kfont3erColor,
-              enable: true,
-            ),
-            enableAxisAnimation: true,
-            isTransposed: true, //Invierte el grafico
-            plotAreaBackgroundColor: Colors.white,
-            backgroundColor: Colors.transparent,
-            primaryXAxis: CategoryAxis(
-                isVisible: true,
-                maximum: 19,
-                // minimum: 19,
-                maximumLabels: 0,
-                // title: !isVisbleLegend ? AxisTitle():AxisTitle(text: 'Nombre'),
-                visibleMaximum: 15,
-                visibleMinimum: 0,
-                interval: 1,
-                arrangeByIndex: false),
-            borderColor: Colors.white,
-            plotAreaBorderColor: Colors.black12,
-            // plotAreaBorderWidth: 1,
-            // plotAreaBackgroundImage: const AssetImage(AssetsData.andeanLodges),
-
-            series: <ChartSeries<User, String>>[
-              // LineSeries
-              ColumnSeries<User, String>(
-                  dataSource: widget.listusers.recursoList,
-                  emptyPointSettings: EmptyPointSettings(
-                      mode: EmptyPointMode.average, color: Colors.orange),
-                  markerSettings: const MarkerSettings(
-                    isVisible: true,
-                    borderColor: Colors.indigo,
-                  ),
-                  xValueMapper: (User data, _) {
-                    return data.role;
-                  },
-                  yValueMapper: (User data, _) => data.calification,
-                  color: kfontNavPinkcolor.withOpacity(.8),
-                  name: 'Roles',
-                  // Enable data label
-                  dataLabelSettings: const DataLabelSettings(
-                    isVisible: true,
-                  )),
-              ColumnSeries<User, String>(
-                  dataSource: widget.listusers.recursoList,
-                  xValueMapper: (User data, _) =>
-                      '${data.id} •${data.nombreCompleto}',
-                  yValueMapper: (User data, _) => data.calification,
-                  name: 'Usuarios',
-                  markerSettings: const MarkerSettings(
-                    isVisible: true,
-                    borderColor: Colors.greenAccent,
-                  ),
-                  color: Colors.green.withOpacity(.5),
-                  dataLabelSettings: const DataLabelSettings(
-                    isVisible: true,
-                    // alignment: ChartAlignment.far
-                  )),
-            ]) : spacingheight10,
-        tab == 2 ? SfPyramidChart(
-            tooltipBehavior: TooltipBehavior(
-              color: kfont3erColor,
-              enable: true,
-            ),
-            selectionGesture: ActivationMode.longPress,
-            backgroundColor: const Color.fromARGB(255, 246, 240, 167),
-            borderColor: Colors.orangeAccent,
-            title: ChartTitle(text: ''),
-            enableMultiSelection: true,
-            legend: const Legend(isVisible: true),
-            series: PyramidSeries<User, String>(
-                dataSource: widget.listusers.recursoList,
-                xValueMapper: (User data, _) => data.nombreCompleto,
-                yValueMapper: (User data, _) => data.calification)): spacingheight10,
-       tab ==3 ? SfCartesianChart(legend: const Legend(isVisible: true), series: <ChartSeries>[
-          HistogramSeries<User, num>(
-              dataSource: widget.listusers.recursoList,
-              yValueMapper: (User sales, _) => sales.calification,
-              binInterval: 2,
-              showNormalDistributionCurve: true,
-              curveColor: const Color.fromRGBO(192, 108, 132, 1),
-              borderWidth: 3),
-        ]) : spacingheight10,
-      ],
-    );
-  }
-}
 
 
 const maxHeight = 350.0;
@@ -342,7 +142,7 @@ class SliverAppBAr extends SliverPersistentHeaderDelegate {
     final List<User> usua = userList.recursoList;
 
     return Container(
-      color: Colors.white,
+      color: const Color.fromARGB(255, 18, 18, 18),
       child: Stack(
         children: [
           Positioned(
@@ -356,18 +156,13 @@ class SliverAppBAr extends SliverPersistentHeaderDelegate {
                     MaterialPageRoute(
                         builder: (context) => const UsuarioModule()));
               },
-              child: Row(
+              child: const Row(
                 children: [
                   H1(
                       fontSize: 18,
                       text: 'Editar',
                       textColor: Colors.white),
-                  SvgPicture.asset(
-                    AssetsDataSVG.editar,
-                    // ignore: deprecated_member_use
-                    color: Colors.white,
-                    width: 20,
-                  )
+                  Icon(Icons.edit,color: Colors.white,),
                 ],
               ),
             ),
@@ -429,11 +224,11 @@ class SliverAppBAr extends SliverPersistentHeaderDelegate {
                         child: Container(
                           height: currentImagesize,
                           width: currentImagesize,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(usua[index].image))),
+                                  image: AssetImage('assets/user.jpeg'))),
                         ),
                       );
                     },
@@ -445,12 +240,10 @@ class SliverAppBAr extends SliverPersistentHeaderDelegate {
 
   H1 _textUi(double percent, String text) {
     return H1(
-        // textOverflow: TextOverflow.ellipsis,
-        // fontWeight: FontWeight.normal,
         fontSize: ((maxTitleSize - 11) * (1 - percent))
             .clamp(minSubTitleSize, maxSubTitleSize),
         text: text,
-        textColor: kfontNavTealcolor);
+        textColor: Colors.blue);
   }
 
   @override

@@ -1,9 +1,10 @@
 import 'package:crud_sheety/UI/general/general.dart';
+import 'package:crud_sheety/UI/pages/nav_perfil_page.dart';
 import 'package:crud_sheety/UI/widget/widget.dart';
 import 'package:crud_sheety/UI/pagesModules/pagina_datatable.dart';
 import 'package:crud_sheety/models/model.dart';
 import 'package:crud_sheety/service/user_provider.dart';
-import 'package:crud_sheety/utils/text_custom.dart';
+import 'package:crud_sheety/UI/widget/text_custom.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<RecursosProvider>(context, listen: true);
     final List<User> users = userProvider.recursoList;
-    final size = MediaQuery.of(context).size;
 
     String userCorrecto;
     String passwordcorecto;
@@ -40,57 +40,75 @@ class _LoginPageState extends State<LoginPage> {
         for (int i = 0; i < users.length; i++) {
           userCorrecto = users[i].dni.toString();
           passwordcorecto = users[i].password;
-
-          if (userCorrecto.toLowerCase() == username.toLowerCase() &&
-              passwordcorecto == password) {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const MyDataTable()),
-                (route) => false);
-            // switch (users[i].role) {
-            //   case 'admin':
-
-            //     break;
-            //   default:
-            // }
-          }
+          if (users[i].estatus) {
+            
+              if (userCorrecto.toLowerCase() == username.toLowerCase() && passwordcorecto == password) {
+              
+                switch (users[i].role) {
+                  case 'admin':
+                      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) =>  NavPerfilPage(index: i, listusers: userProvider,)), (route) => false);
+                    break;
+                  case 'usuario':
+                    Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) =>  MyDataTable(index: i, listusers: userProvider,)), (route) => false);
+                  //  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) =>  UsuariogestionPage()), (route) => false);
+                  break;
+                  default:
+                }
+              }
+          } 
         }
       } else {
         !isLoading;
         setState(() {});
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            backgroundColor:
-                const Color.fromARGB(255, 175, 59, 33).withOpacity(.8),
-            content: Row(
-              children: [
-                const Icon(
-                  Icons.error_outline,
-                  color: Colors.white,
-                ),
-                spacingwidth10,
-                const Text(
-                  "Ha ocurrido un error, intentalo nuevamente.",
-                  style: TextStyle(fontSize: 10),
-                ),
-              ],
-            )));
+       ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        duration: const Duration(seconds: 4), // Establece la duración del SnackBar
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.green,
+              ),
+              child: const Text(
+                "Ha ocurrido un error, intentalo nuevamente.\nConsulte al administrador el estado de su cuenta",
+                style: TextStyle(fontSize: 12), // Ajusta el tamaño del texto según tus preferencias
+              ),
+            ),
+          ],
+        ),
+      ));
+
       }
     }
 
     return Scaffold(
-      // backgroundColor: Colors.white,
-      body: isLoading == true
-          ? Form(
+      body:  Form(
               key: formkey,
               child: Stack(
                 children: [
+                  Container(
+                      decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/background.jpeg'))
+                    ),
+                  ),
+                  //  Align(
+                  //    alignment: Alignment.bottomRight,
+                  //    child: Lottie.asset(
+                  //       'assets/Animation.json', 
+                  //       fit: BoxFit.cover,
+                  //     ),
+                  //  ),
                   Align(
                     alignment: Alignment.center,
                     child: Container(
-                     
                       height: MediaQuery.of(context).size.height,
                       constraints: const BoxConstraints(maxWidth: 400, minWidth: 300),
                       child: Column(
@@ -144,6 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                                 border: outlineInputBorder(),
                                 disabledBorder: outlineInputBorder(),
                                 focusedErrorBorder: outlineInputBorder(),
+                                fillColor: Colors.white,
+                                filled: true,
                                 suffixIcon: IconButton(
                                     onPressed: () {
                                       isVisible = !isVisible;
@@ -171,11 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                           ),
                           ButtonLogin(
-                              onTap: () {
-                                login();
-                                setState(() {});
-                                // print('Hola Login');
-                              },
+                              onTap: () => login(),
                               text: 'Iniciar sesión'),
                         ],
                       ),
@@ -184,9 +200,6 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
     );
   }
 }
